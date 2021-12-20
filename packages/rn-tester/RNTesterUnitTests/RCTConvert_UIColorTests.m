@@ -28,12 +28,14 @@ static BOOL CGColorsAreEqual(CGColorRef color1, CGColorRef color2) {
 
 @implementation RCTConvert_NSColorTests
 
+#if !TARGET_OS_TV
 - (void)testColor
 {
   id json = RCTJSONParse(@"{ \"semantic\": \"lightTextColor\" }", nil);
   UIColor *value = [RCTConvert UIColor:json];
   XCTAssertEqualObjects(value, [UIColor lightTextColor]);
 }
+#endif
 
 - (void)testColorFailure
 {
@@ -171,6 +173,8 @@ static BOOL CGColorsAreEqual(CGColorRef color1, CGColorRef color2) {
     id json = RCTJSONParse([NSString stringWithFormat:@"{ \"semantic\": \"%@\" }", semanticColor], nil);
     UIColor *value = [RCTConvert UIColor:json];
     XCTAssertNotNil(value);
+
+    NSLog(@"😨😨😨 color is: %@", semanticColor);
 
     NSNumber *fallback = [semanticColors objectForKey:semanticColor];
     NSUInteger rgbValue = [fallback unsignedIntegerValue];

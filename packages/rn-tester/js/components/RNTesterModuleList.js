@@ -35,7 +35,7 @@ const ExampleModuleRow = ({
   const platform = item.module.platform;
   const onIos = !platform || platform === 'ios';
   const onAndroid = !platform || platform === 'android';
-  const rightAddOn = (
+  const rightAddOn = Platform.isTV ? null : (
     <TouchableHighlight
       style={styles.imageViewStyle}
       onPress={() =>
@@ -123,7 +123,7 @@ const RNTesterModuleList: React$AbstractComponent<any, void> = React.memo(
     const filter = ({example, filterRegex, category}) =>
       filterRegex.test(example.module.title) &&
       (!category || example.category === category) &&
-      (!Platform.isTV || example.supportsTVOS);
+      (!Platform.isTVOS || example.supportsTVOS);
 
     const renderListItem = ({item, section, separators}) => {
       return (

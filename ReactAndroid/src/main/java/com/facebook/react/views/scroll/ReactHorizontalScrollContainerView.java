@@ -17,6 +17,12 @@ public class ReactHorizontalScrollContainerView extends ReactViewGroup {
 
   private int mLayoutDirection;
   private int mCurrentWidth;
+  private int mLastWidth = 0;
+  private Listener rtlListener = null;
+
+  public interface Listener {
+    void onLayout();
+  }
 
   public ReactHorizontalScrollContainerView(Context context) {
     super(context);
@@ -44,6 +50,11 @@ public class ReactHorizontalScrollContainerView extends ReactViewGroup {
 
   @Override
   protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    // This is to fix the overflowing (scaled) item being cropped
+    final HorizontalScrollView parent = (HorizontalScrollView) getParent();
+    parent.setClipChildren(false);
+    this.setClipChildren(false);
+
     if (mLayoutDirection == LAYOUT_DIRECTION_RTL) {
       // When the layout direction is RTL, we expect Yoga to give us a layout
       // that extends off the screen to the left so we re-center it with left=0
@@ -69,5 +80,18 @@ public class ReactHorizontalScrollContainerView extends ReactViewGroup {
       }
     }
     mCurrentWidth = getWidth();
+
+    // Use the listener to adjust the scrollposition if new data was appended
+    if (rtlListener != null) {
+      rtlListener.onLayout();
+    }
+  }
+
+  public int getLastWidth() {
+    return mLastWidth;
+  }
+
+  public void setListener(Listener rtlListener) {
+    this.rtlListener = rtlListener;
   }
 }

@@ -114,7 +114,7 @@ RCT_EXPORT_MODULE()
     if (!self->_window && !RCTRunningInTestEnvironment()) {
       CGSize screenSize = [UIScreen mainScreen].bounds.size;
 
-      if (@available(iOS 11.0, *)) {
+      if (@available(iOS 11.0, tvOS 12.0, *)) {
         UIWindow *window = RCTSharedApplication().keyWindow;
         self->_window =
             [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, screenSize.width, window.safeAreaInsets.top + 10)];
@@ -126,7 +126,11 @@ RCT_EXPORT_MODULE()
       }
       [self->_window addSubview:self->_label];
 
+#if TARGET_OS_TV
+      self->_window.windowLevel = UIWindowLevelNormal + 1;
+#else
       self->_window.windowLevel = UIWindowLevelStatusBar + 1;
+#endif
       // set a root VC so rotation is supported
       self->_window.rootViewController = [UIViewController new];
 

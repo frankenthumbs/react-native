@@ -48,11 +48,13 @@ export default function RNTPressableRow({
       onPressIn={onPressIn}
       onPressOut={onPressOut}
       accessibilityLabel={label}
-      style={({pressed}) => [
+      style={({focused, pressed}) => [
         styles.row,
         typeof style === 'function' ? style(pressed) : style,
         pressed
           ? styles.pressed
+          : focused
+          ? styles.focused
           : {backgroundColor: theme.SystemBackgroundColor},
       ]}
       onPress={onPress}>
@@ -87,6 +89,10 @@ const styles = StyleSheet.create({
   },
   pressed: {
     backgroundColor: 'rgb(242,242,242)',
+    elevation: 3,
+  },
+  focused: {
+    backgroundColor: 'rgb(242,100,100)',
     elevation: 3,
   },
   topRowStyle: {

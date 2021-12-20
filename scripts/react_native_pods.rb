@@ -24,7 +24,8 @@ def use_react_native! (options={})
   pod 'React', :path => "#{prefix}/"
   pod 'React-Core', :path => "#{prefix}/"
   pod 'React-CoreModules', :path => "#{prefix}/React/CoreModules"
-  pod 'React-RCTActionSheet', :path => "#{prefix}/Libraries/ActionSheetIOS"
+  # Not for tvOS
+  # pod 'React-RCTActionSheet', :path => "#{prefix}/Libraries/ActionSheetIOS"
   pod 'React-RCTAnimation', :path => "#{prefix}/Libraries/NativeAnimation"
   pod 'React-RCTBlob', :path => "#{prefix}/Libraries/Blob"
   pod 'React-RCTImage', :path => "#{prefix}/Libraries/Image"
@@ -32,7 +33,8 @@ def use_react_native! (options={})
   pod 'React-RCTNetwork', :path => "#{prefix}/Libraries/Network"
   pod 'React-RCTSettings', :path => "#{prefix}/Libraries/Settings"
   pod 'React-RCTText', :path => "#{prefix}/Libraries/Text"
-  pod 'React-RCTVibration', :path => "#{prefix}/Libraries/Vibration"
+  # Not for tvOS
+  # pod 'React-RCTVibration', :path => "#{prefix}/Libraries/Vibration"
   pod 'React-Core/RCTWebSocket', :path => "#{prefix}/"
 
   unless production
@@ -238,9 +240,11 @@ def __apply_Xcode_12_5_M1_post_install_workaround(installer)
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       # ensure IPHONEOS_DEPLOYMENT_TARGET is at least 11.0
-      should_upgrade = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].split('.')[0].to_i < 11
-      if should_upgrade
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+      if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] != nil
+        should_upgrade = config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].split('.')[0].to_i < 11
+        if should_upgrade
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+        end
       end
     end
   end

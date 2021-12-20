@@ -66,6 +66,11 @@ while :; do
       RUN_CLI_INSTALL=0
       shift
       ;;
+    
+    --tvos)
+      RUN_IOS=1
+      shift
+      ;;
 
     *)
       break

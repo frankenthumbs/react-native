@@ -59,7 +59,7 @@ const Components: Array<RNTesterModuleInfo> = [
   {
     key: 'InputAccessoryViewExample',
     module: require('../examples/InputAccessoryView/InputAccessoryViewExample'),
-    supportsTVOS: true,
+    supportsTVOS: false,
   },
   {
     key: 'KeyboardAvoidingViewExample',
@@ -116,6 +116,11 @@ const Components: Array<RNTesterModuleInfo> = [
   {
     key: 'ScrollViewAnimatedExample',
     module: require('../examples/ScrollView/ScrollViewAnimatedExample'),
+    supportsTVOS: true,
+  },
+  {
+    key: 'TVTextScrollViewExample',
+    module: require('../examples/TVTextScrollView/TVTextScrollViewExample'),
     supportsTVOS: true,
   },
   {
@@ -317,6 +322,24 @@ const APIs: Array<RNTesterModuleInfo> = [
     key: 'TurboModuleExample',
     module: require('../examples/TurboModule/TurboModuleExample'),
     supportsTVOS: false,
+  },
+  {
+    key: 'TVEventHandlerExample',
+    category: 'TV',
+    module: require('../examples/TVEventHandler/TVEventHandlerExample'),
+    supportsTVOS: true,
+  },
+  {
+    key: 'DirectionalNextFocusExample',
+    category: 'TV',
+    module: require('../examples/DirectionalNextFocus/DirectionalNextFocusExample'),
+    supportsTVOS: true,
+  },
+  {
+    key: 'TVFocusGuideExample',
+    category: 'TV',
+    module: require('../examples/TVFocusGuide/TVFocusGuideExample'),
+    supportsTVOS: true,
   },
   {
     key: 'VibrationExample',

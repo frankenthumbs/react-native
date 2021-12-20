@@ -28,7 +28,20 @@
 #import "RCTView.h"
 #import "UIView+React.h"
 
+#if TARGET_OS_TV
+#import "RCTTVNavigationEventEmitter.h"
+#import "RCTTVRemoteHandler.h"
+#endif
+
+#if RCT_DEV
+#import "RCTDevMenu.h"
+#endif
+
 NSString *const RCTContentDidAppearNotification = @"RCTContentDidAppearNotification";
+
+NSString *const RCTTVEnableMenuKeyNotification = @"RCTTVEnableMenuKeyNotification";
+NSString *const RCTTVDisableMenuKeyNotification = @"RCTTVDisableMenuKeyNotification";
+
 
 @interface RCTUIManager (RCTRootView)
 
@@ -84,6 +97,18 @@ NSString *const RCTContentDidAppearNotification = @"RCTContentDidAppearNotificat
                                                  name:RCTContentDidAppearNotification
                                                object:self];
 
+#if TARGET_OS_TV
+
+#if RCT_DEV
+      [[NSNotificationCenter defaultCenter] addObserver:self
+                                               selector:@selector(showDevMenu) 
+                                                   name:@"RCTShowDevMenuNotification"
+                                                 object:nil];
+#endif
+      
+    self.tvRemoteHandler = [[RCTTVRemoteHandler alloc] initWithView:self];
+#endif
+
     [self showLoadingView];
 
     // Immediately schedule the application to be started.
@@ -95,6 +120,14 @@ NSString *const RCTContentDidAppearNotification = @"RCTContentDidAppearNotificat
 
   return self;
 }
+
+#if TARGET_OS_TV && RCT_DEV
+- (void)showDevMenu {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[self->_bridge devMenu] show];
+    });
+}
+#endif // TARGET_OS_TV
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge
                     moduleName:(NSString *)moduleName
@@ -115,6 +148,16 @@ NSString *const RCTContentDidAppearNotification = @"RCTContentDidAppearNotificat
 
 RCT_NOT_IMPLEMENTED(-(instancetype)initWithFrame : (CGRect)frame)
 RCT_NOT_IMPLEMENTED(-(instancetype)initWithCoder : (NSCoder *)aDecoder)
+
+#if TARGET_OS_TV
+- (NSArray<id<UIFocusEnvironment>> *)preferredFocusEnvironments
+{
+  if (self.reactPreferredFocusedView) {
+    return @[self.reactPreferredFocusedView];
+  }
+  return [super preferredFocusEnvironments];
+}
+#endif
 
 #pragma mark - passThroughTouches
 
@@ -374,6 +417,9 @@ RCT_NOT_IMPLEMENTED(-(instancetype)initWithCoder : (NSCoder *)aDecoder)
 
 - (void)dealloc
 {
+#if TARGET_OS_TV
+  self.tvRemoteHandler = nil;
+#endif
   [_contentView invalidate];
 }
 
