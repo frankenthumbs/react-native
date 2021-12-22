@@ -420,10 +420,6 @@ public class ReactModalHostView extends ViewGroup
 
     private final ReactContext mReactContext;
 
-    private final ReactAndroidHWInputDeviceHelper mAndroidHWInputDeviceHelper;
-
-    private final ReactContext mReactContext;
-
     public DialogRootViewGroup(Context context) {
       super(context);
       mReactContext = (ReactContext)context;
