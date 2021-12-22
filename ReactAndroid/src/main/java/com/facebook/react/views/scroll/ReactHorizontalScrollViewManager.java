@@ -230,7 +230,7 @@ public class ReactHorizontalScrollViewManager extends ViewGroupManager<ReactHori
     if (data.mAnimated) {
       scrollView.reactSmoothScrollTo(destX, data.mDestY);
     } else {
-      scrollView.reactScrollTo(destX, data.mDestY);
+      scrollView.scrollTo(destX, data.mDestY);
     }
   }
 
